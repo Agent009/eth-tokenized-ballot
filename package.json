@@ -8,8 +8,9 @@
     "test": "hardhat test",
     "hh:accounts": "hardhat accounts",
     "hh:clean": "hardhat clean",
-    "ballottoken:deploy:test": "ts-node -r tsconfig-paths/register --files scripts/BallotToken/Test.ts",
-    "ballottoken:deploy": "ts-node -r tsconfig-paths/register --files scripts/BallotToken/Deploy.ts"
+    "token:deploy:test": "ts-node -r tsconfig-paths/register --files scripts/BallotToken/Test.ts",
+    "token:deploy": "ts-node -r tsconfig-paths/register --files scripts/BallotToken/Deploy.ts",
+    "ballot:deploy:test": "ts-node -r tsconfig-paths/register --files scripts/TokenizedBallot/Test.ts"
   },
   "author": "Mohammad Amir <amir@connextar.com>",
   "license": "ISC",

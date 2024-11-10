@@ -14,6 +14,8 @@ npx hardhat node
 ### Scripts
 
 ```bash
-npm run ballottoken:deploy:test # deploy locally for testing purposes
-npm run ballottoken:deploy # deploy to testnet
+npm run token:deploy:test # deploy locally for testing purposes
+npm run token:deploy # deploy to testnet
+npm run ballot:deploy:test # deploy locally for testing purposes
+npm run ballot:deploy # deploy to testnet
 ```
