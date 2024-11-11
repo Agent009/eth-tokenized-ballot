@@ -5,6 +5,7 @@ import { sepolia } from "viem/chains";
 import { constants } from "@lib/constants";
 
 export const ballotTokenContractAddress = constants.contracts.ballotToken.sepolia as `0x${string}`;
+export const ballotContractAddress = constants.contracts.ballot.sepolia as `0x${string}`;
 export const deployerAccount = privateKeyToAccount(`0x${constants.account.deployerPrivateKey}`);
 
 export const checkParameters = (parameters: string[], count: number, tip?: string): void => {
@@ -20,6 +21,17 @@ export const checkAddress = (type: string, address?: string): void => {
   if (!/^0x[a-fA-F0-9]{40}$/.test(address)) {
     throw new Error(`Invalid ${type} address provided.`);
   }
+}
+
+export const checkNumber = (type: string, val?: string): void => {
+  if (!val) {
+    throw new Error(`${type} not provided.`);
+  }
+
+  if (isNaN(Number(val))) {
+    throw new Error(`Invalid ${type} provided.`);
+  }
+
 }
 
 export const publicClientFor = async (chain?: Chain | undefined) => viem.getPublicClient(chain === undefined ? undefined : {

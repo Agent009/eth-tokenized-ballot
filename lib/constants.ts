@@ -9,9 +9,12 @@ export const constants = Object.freeze({
     deployerPrivateKey: process.env.PRIVATE_KEY || "",
   },
   contracts: {
+    ballot: {
+      sepolia: process.env.BALLOT_SEPOLIA || "",
+    },
     ballotToken: {
       sepolia: process.env.BALLOT_TOKEN_SEPOLIA || "",
-    }
+    },
   },
   integrations: {
     alchemy: {

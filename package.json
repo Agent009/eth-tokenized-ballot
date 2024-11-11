@@ -10,7 +10,11 @@
     "hh:clean": "hardhat clean",
     "token:deploy:test": "ts-node -r tsconfig-paths/register --files scripts/BallotToken/Test.ts",
     "token:deploy": "ts-node -r tsconfig-paths/register --files scripts/BallotToken/Deploy.ts",
-    "ballot:deploy:test": "ts-node -r tsconfig-paths/register --files scripts/TokenizedBallot/Test.ts"
+    "token:mint": "ts-node -r tsconfig-paths/register --files scripts/BallotToken/Mint.ts",
+    "ballot:deploy:test": "ts-node -r tsconfig-paths/register --files scripts/TokenizedBallot/Test.ts",
+    "ballot:deploy": "ts-node -r tsconfig-paths/register --files scripts/TokenizedBallot/Deploy.ts",
+    "ballot:get-proposal": "ts-node -r tsconfig-paths/register --files scripts/TokenizedBallot/GetProposal.ts",
+    "ballot:get-winning-proposal": "ts-node -r tsconfig-paths/register --files scripts/TokenizedBallot/GetWinningProposal.ts"
   },
   "author": "Mohammad Amir <amir@connextar.com>",
   "license": "ISC",
