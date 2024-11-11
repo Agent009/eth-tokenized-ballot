@@ -27,13 +27,11 @@ async function main() {
 
   // Fetch the contract
   const publicClient = await publicClientFor(sepolia);
-  const [deployer] = await viem.getWalletClients();
-  const deployerAccount = deployer!.account;
   const deployerAddress = deployerAccount.address;
   const walletClient = walletClientFor(deployerAccount);
   const blockNumber = await publicClient.getBlockNumber();
   const balance = await publicClient.getBalance({
-    address: deployer!.account.address,
+    address: deployerAccount.address,
   });
   console.log(
     `scripts -> ${CONTRACT_NAME} -> Mint -> last block number`, 
@@ -42,7 +40,7 @@ async function main() {
     deployerAddress, 
     "balance", 
     formatEther(balance), 
-    deployer!.chain.nativeCurrency.symbol
+    walletClient.chain.nativeCurrency.symbol
   );
 
   // Get the proposal details

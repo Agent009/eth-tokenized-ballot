@@ -1,7 +1,7 @@
 import { viem } from "hardhat";
 import { formatEther, hexToString } from "viem";
 import { sepolia } from "viem/chains";
-import { ballotContractAddress, checkAddress, publicClientFor } from "@scripts/utils";
+import { ballotContractAddress, checkAddress, deployerAccount, publicClientFor, walletClientFor } from "@scripts/utils";
 
 const CONTRACT_NAME = "TokenizedBallot";
 const PROPOSAL_NAME_IDX = 0;
@@ -17,8 +17,8 @@ async function main() {
   // Fetch the contract
   const publicClient = await publicClientFor(sepolia);
   const [deployer] = await viem.getWalletClients();
-  const deployerAccount = deployer!.account;
   const deployerAddress = deployerAccount.address;
+  const walletClient = walletClientFor(deployerAccount);
   const blockNumber = await publicClient.getBlockNumber();
   const balance = await publicClient.getBalance({
     address: deployer!.account.address,
@@ -30,7 +30,7 @@ async function main() {
     deployerAddress, 
     "balance", 
     formatEther(balance), 
-    deployer!.chain.nativeCurrency.symbol
+    walletClient.chain.nativeCurrency.symbol
   );
 
   // Get the winning proposal details

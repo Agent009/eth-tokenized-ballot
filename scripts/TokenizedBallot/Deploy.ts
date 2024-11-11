@@ -2,7 +2,7 @@ import { viem } from "hardhat";
 import { formatEther, toHex } from "viem";
 import { sepolia } from "viem/chains";
 import { constants } from "@lib/constants";
-import { checkAddress, checkNumber, checkParameters, publicClientFor } from "@scripts/utils";
+import { checkAddress, checkNumber, checkParameters, deployerAccount, publicClientFor, walletClientFor } from "@scripts/utils";
 
 const CONTRACT_NAME = "TokenizedBallot";
 
@@ -24,6 +24,7 @@ async function main() {
   
   for (let i = ARG_PROPOSAL_NAMES_START_IDX; i < parameters.length; i++) {
     if (parameters[i] !== undefined && typeof parameters[i] === 'string') {
+      // @ts-expect-error ignore
       proposals.push(parameters[i]);
     }
   }
@@ -32,12 +33,11 @@ async function main() {
   
   // Deploy the contract
   const publicClient = await publicClientFor(sepolia);
-  const [deployer] = await viem.getWalletClients();
-  const deployerAccount = deployer!.account;
   const deployerAddress = deployerAccount.address;
+  const walletClient = walletClientFor(deployerAccount);
   const blockNumber = await publicClient.getBlockNumber();
   const balance = await publicClient.getBalance({
-    address: deployer!.account.address,
+    address: deployerAddress,
   });
   console.log(
     `scripts -> ${CONTRACT_NAME} -> Deploy -> last block number`, 
@@ -46,11 +46,11 @@ async function main() {
     deployerAddress, 
     "balance", 
     formatEther(balance), 
-    deployer!.chain.nativeCurrency.symbol
+    walletClient.chain.nativeCurrency.symbol
   );
 
   // console.log(`scripts -> ${CONTRACT_NAME} -> Deploy -> deploying contract`);
-  const tokenContract = await viem.deployContract(CONTRACT_NAME, [
+  const tokenContract = await viem.deployContract(CONTRACT_NAME as never, [
     proposals.map((prop) => toHex(prop, { size: 32 }))
   ]);
   console.log(`scripts -> ${CONTRACT_NAME} -> Deploy -> contract deployed to`, tokenContract.address);

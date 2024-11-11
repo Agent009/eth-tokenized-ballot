@@ -1,7 +1,7 @@
 import { viem } from "hardhat";
 import { formatEther, hexToString } from "viem";
 import { sepolia } from "viem/chains";
-import { ballotContractAddress, checkAddress, checkNumber, checkParameters, publicClientFor } from "@scripts/utils";
+import { ballotContractAddress, checkAddress, checkNumber, checkParameters, deployerAccount, publicClientFor, walletClientFor } from "@scripts/utils";
 
 const CONTRACT_NAME = "TokenizedBallot";
 const PROPOSAL_NAME_IDX = 0;
@@ -20,12 +20,11 @@ async function main() {
 
   // Fetch the contract
   const publicClient = await publicClientFor(sepolia);
-  const [deployer] = await viem.getWalletClients();
-  const deployerAccount = deployer!.account;
   const deployerAddress = deployerAccount.address;
+  const walletClient = walletClientFor(deployerAccount);
   const blockNumber = await publicClient.getBlockNumber();
   const balance = await publicClient.getBalance({
-    address: deployer!.account.address,
+    address: deployerAddress,
   });
   console.log(
     `scripts -> ${CONTRACT_NAME} -> GetProposal -> last block number`, 
@@ -34,7 +33,7 @@ async function main() {
     deployerAddress, 
     "balance", 
     formatEther(balance), 
-    deployer!.chain.nativeCurrency.symbol
+    walletClient!.chain.nativeCurrency.symbol
   );
 
   // Get the proposal details
@@ -42,7 +41,8 @@ async function main() {
     client: {
       public: publicClient,
       wallet: walletClient
-    });
+    }
+  });
   const proposal = await contract.read.proposals([BigInt(proposalIndex!)]);
   console.log(`scripts -> ${CONTRACT_NAME} -> GetProposal -> idx`, proposalIndex, "name", hexToString(proposal[PROPOSAL_NAME_IDX]), "votes", proposal[PROPOSAL_VOTES_IDX]);
 }
