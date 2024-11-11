@@ -45,11 +45,11 @@ export const walletClientFor = (account: PrivateKeyAccount) => createWalletClien
   transport: http(constants.integrations.alchemy.sepolia),
 });
 
-export const gasPrices = (receipt: TransactionReceipt, consolePrepend?: string) => {
+export const gasPrices = (receipt: TransactionReceipt, msgPrefix?: string) => {
   const gasPrice = receipt.effectiveGasPrice ? formatEther(receipt.effectiveGasPrice) : "N/A";
   const gasUsed = receipt.gasUsed ? receipt.gasUsed.toString() : "N/A";
   const totalCost = receipt.effectiveGasPrice ? formatEther(receipt.effectiveGasPrice * receipt.gasUsed) : "N/A";
-  console.log(`${consolePrepend} -> gas -> price`, gasPrice, "used", gasUsed, "totalCost", totalCost);
+  console.log(`${msgPrefix} -> gas -> price`, gasPrice, "used", gasUsed, "totalCost", totalCost);
   return {
     display: {
       gasPrice,

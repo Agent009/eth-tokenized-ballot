@@ -29,6 +29,18 @@ npm run token:deploy # deploy to testnet
 
 Then, store the token contract address in the `BALLOT_TOKEN_SEPOLIA` environment variable for consequent operations.
 
+### Minting
+
+```bash
+npm run token:mint TARGET_ADDRESS MINT_AMOUNT
+```
+
+For example:
+
+```bash
+npm run token:mint 0x0B5455BaC0f3795b5927f37BC545c3eAE08c8b4a 1000000000000000000000
+```
+
 ## TokenizedBallot
 
 This contract offers the tokenized ballot functionality.
@@ -53,3 +65,7 @@ If `env` is provided as the `TOKEN_CONTRACT_ADDRESS`, then the address is automa
 ```bash
 npm run ballot:deploy env 3 PROPOSAL_1 PROPOSAL_2 ... 
 ```
+
+### Delegate
+
+### Vote
