@@ -2,6 +2,7 @@ import { viem } from "hardhat";
 import { parseEther } from "@node_modules/viem";
 
 const CONTRACT_NAME = "BallotToken";
+const MSG_PREFIX = `scripts -> ${CONTRACT_NAME} -> Test`;
 const MINT_VALUE = parseEther("10");
 
 /**
@@ -25,19 +26,19 @@ async function main(): Promise<void> {
   const acc2Account = acc2!.account;
   const acc2Address = acc2Account.address;
   const contract = await viem.deployContract(CONTRACT_NAME);
-  console.log(`scripts -> ${CONTRACT_NAME} -> Test -> Token contract deployed at ${contract.address}\n`);
+  console.log(`${MSG_PREFIX} -> Token contract deployed at ${contract.address}\n`);
 
   // Minting some tokens
   const mintTx = await contract.write.mint([acc1Address, MINT_VALUE]);
   await publicClient.waitForTransactionReceipt({ hash: mintTx });
   console.log(
-    `scripts -> ${CONTRACT_NAME} -> Test -> Minted ${MINT_VALUE.toString()} decimal units to account ${
+    `${MSG_PREFIX} -> Minted ${MINT_VALUE.toString()} decimal units to account ${
       acc1Address
     }\n`
   );
   const balanceBN = await contract.read.balanceOf([acc1Address]);
   console.log(
-    `scripts -> ${CONTRACT_NAME} -> Test -> Account ${
+    `${MSG_PREFIX} -> Account ${
       acc1Address
     } has ${balanceBN.toString()} decimal units of BallotToken\n`
   );
@@ -45,7 +46,7 @@ async function main(): Promise<void> {
   // Checking vote power
   const votes = await contract.read.getVotes([acc1Address]);
   console.log(
-    `scripts -> ${CONTRACT_NAME} -> Test -> Account ${
+    `${MSG_PREFIX} -> Account ${
       acc1Address
     } has ${votes.toString()} units of voting power before self delegating\n`
   );
@@ -57,7 +58,7 @@ async function main(): Promise<void> {
   await publicClient.waitForTransactionReceipt({ hash: delegateTx });
   const votesAfter = await contract.read.getVotes([acc1Address]);
   console.log(
-    `scripts -> ${CONTRACT_NAME} -> Test -> Account ${
+    `${MSG_PREFIX} -> Account ${
       acc1Address
     } has ${votesAfter.toString()} units of voting power after self delegating\n`
   );
@@ -74,7 +75,7 @@ async function main(): Promise<void> {
     acc1Address,
   ]);
   console.log(
-    `scripts -> ${CONTRACT_NAME} -> Test -> Account ${
+    `${MSG_PREFIX} -> Account ${
       acc1Address
     } has ${votes1AfterTransfer.toString()} units of voting power after transferring\n`
   );
@@ -82,7 +83,7 @@ async function main(): Promise<void> {
     acc2Address,
   ]);
   console.log(
-    `scripts -> ${CONTRACT_NAME} -> Test -> Account ${
+    `${MSG_PREFIX} -> Account ${
       acc2Address
     } has ${votes2AfterTransfer.toString()} units of voting power after receiving a transfer\n`
   );
@@ -94,7 +95,7 @@ async function main(): Promise<void> {
   await publicClient.waitForTransactionReceipt({ hash: delegateTx2 });
   const votesAfter2 = await contract.read.getVotes([acc2Address]);
   console.log(
-    `scripts -> ${CONTRACT_NAME} -> Test -> Account ${
+    `${MSG_PREFIX} -> Account ${
       acc2Address
     } has ${votesAfter2.toString()} units of voting power after self delegating\n`
   );
@@ -107,7 +108,7 @@ async function main(): Promise<void> {
       index,
     ]);
     console.log(
-      `scripts -> ${CONTRACT_NAME} -> Test -> Account ${
+      `${MSG_PREFIX} -> Account ${
         acc1Address
       } had ${pastVotes.toString()} units of voting power at block ${index}\n`
     );

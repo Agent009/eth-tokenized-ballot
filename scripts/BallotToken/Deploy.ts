@@ -1,35 +1,24 @@
 import { viem } from "hardhat";
-import { formatEther } from "viem";
 import { sepolia } from "viem/chains";
-import { publicClientFor } from "@scripts/utils";
+import { bootstrap } from "@scripts/utils";
 
 const CONTRACT_NAME = "BallotToken";
+const MSG_PREFIX = `scripts -> ${CONTRACT_NAME} -> Deploy`;
 
 async function main() {
-  const publicClient = await publicClientFor(sepolia);
-  const [deployer] = await viem.getWalletClients();
-  const deployerAccount = deployer!.account;
-  const deployerAddress = deployerAccount.address;
-  const blockNumber = await publicClient.getBlockNumber();
-  const balance = await publicClient.getBalance({
-    address: deployer!.account.address,
-  });
-  console.log(
-    `scripts -> ${CONTRACT_NAME} -> Deploy -> last block number`, 
-    blockNumber, 
-    "deployer", 
-    deployerAddress, 
-    "balance", 
-    formatEther(balance), 
-    deployer!.chain.nativeCurrency.symbol
-  );
+  const { publicClient, walletClient } = await bootstrap(MSG_PREFIX, sepolia);
 
   // console.log(`scripts -> ${CONTRACT_NAME} -> Deploy -> deploying contract`);
-  const tokenContract = await viem.deployContract(CONTRACT_NAME);
-  console.log(`scripts -> ${CONTRACT_NAME} -> Deploy -> contract deployed to`, tokenContract.address);
+  const tokenContract = await viem.deployContract(CONTRACT_NAME, [], {
+    client: {
+      public: publicClient,
+      wallet: walletClient
+    }
+  });
+  console.log(`${MSG_PREFIX} -> contract deployed to`, tokenContract.address);
 
   const totalSupply = await tokenContract.read.totalSupply();
-  console.log(`scripts -> ${CONTRACT_NAME} -> Deploy -> totalSupply`, { totalSupply });
+  console.log(`${MSG_PREFIX} -> totalSupply`, { totalSupply });
 }
 
 main().catch((error) => {

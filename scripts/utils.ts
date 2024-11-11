@@ -59,3 +59,28 @@ export const gasPrices = (receipt: TransactionReceipt, consolePrepend?: string) 
     totalCost: receipt.effectiveGasPrice ? receipt.effectiveGasPrice * receipt.gasUsed : 0n
   }
 }
+
+export const bootstrap = async (msgPrefix: string = "scripts", chain_?: Chain | undefined, deployerAccount_: PrivateKeyAccount = deployerAccount) => {
+  const publicClient = await publicClientFor(chain_);
+  const deployerAddress = deployerAccount_.address;
+  const walletClient = walletClientFor(deployerAccount_);
+  const blockNumber = await publicClient.getBlockNumber();
+  const balance = await publicClient.getBalance({
+    address: deployerAddress,
+  });
+  console.log(
+    `${msgPrefix} -> last block number`, 
+    blockNumber, 
+    "deployer", 
+    deployerAddress, 
+    "balance", 
+    formatEther(balance), 
+    walletClient.chain.nativeCurrency.symbol
+  );
+  return {
+    publicClient,
+    walletClient,
+    blockNumber,
+    balance
+  };
+}

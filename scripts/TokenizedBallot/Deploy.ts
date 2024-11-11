@@ -1,10 +1,11 @@
 import { viem } from "hardhat";
-import { formatEther, toHex } from "viem";
+import { toHex } from "viem";
 import { sepolia } from "viem/chains";
 import { constants } from "@lib/constants";
-import { checkAddress, checkNumber, checkParameters, deployerAccount, publicClientFor, walletClientFor } from "@scripts/utils";
+import { bootstrap, checkAddress, checkNumber, checkParameters } from "@scripts/utils";
 
 const CONTRACT_NAME = "TokenizedBallot";
+const MSG_PREFIX = `scripts -> ${CONTRACT_NAME} -> Deploy`;
 
 async function main() {
   // Fetch parameters
@@ -32,28 +33,20 @@ async function main() {
   if (!proposals.length) throw new Error(`scripts -> ${CONTRACT_NAME} -> Deploy -> No proposals were provided.`);
   
   // Deploy the contract
-  const publicClient = await publicClientFor(sepolia);
-  const deployerAddress = deployerAccount.address;
-  const walletClient = walletClientFor(deployerAccount);
-  const blockNumber = await publicClient.getBlockNumber();
-  const balance = await publicClient.getBalance({
-    address: deployerAddress,
-  });
-  console.log(
-    `scripts -> ${CONTRACT_NAME} -> Deploy -> last block number`, 
-    blockNumber, 
-    "deployer", 
-    deployerAddress, 
-    "balance", 
-    formatEther(balance), 
-    walletClient.chain.nativeCurrency.symbol
-  );
+  const { publicClient, walletClient } = await bootstrap(MSG_PREFIX, sepolia);
 
   // console.log(`scripts -> ${CONTRACT_NAME} -> Deploy -> deploying contract`);
   const tokenContract = await viem.deployContract(CONTRACT_NAME as never, [
-    proposals.map((prop) => toHex(prop, { size: 32 }))
-  ]);
-  console.log(`scripts -> ${CONTRACT_NAME} -> Deploy -> contract deployed to`, tokenContract.address);
+    proposals.map((prop) => toHex(prop, { size: 32 })),
+    tokenAddress,
+    blockNo
+  ], {
+    client: {
+      public: publicClient,
+      wallet: walletClient
+    }
+  });
+  console.log(`${MSG_PREFIX} -> contract deployed to`, tokenContract.address);
 }
 
 main().catch((error) => {

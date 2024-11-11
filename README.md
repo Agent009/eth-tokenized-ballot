@@ -9,32 +9,46 @@ REPORT_GAS=true npx hardhat test
 npx hardhat node
 ```
 
-## TokenizedBallot
+## BallotToken
 
-### Scripts
+This contract holds the tokens that are used in the ballot.
+
+### Testing
 
 ```bash
 npm run token:deploy:test # deploy locally for testing purposes
+```
+
+### Deployment
+
+To begin, deploy the contract:
+
+```bash
 npm run token:deploy # deploy to testnet
+```
+
+Then, store the token contract address in the `BALLOT_TOKEN_SEPOLIA` environment variable for consequent operations.
+
+## TokenizedBallot
+
+This contract offers the tokenized ballot functionality.
+You must have the `BallotToken` contract deployed in order to utilise this properly.
+
+### Testing
+
+```bash
 npm run ballot:deploy:test # deploy locally for testing purposes
-npm run ballot:deploy # deploy to testnet
 ```
 
-The process is to first deploy the ballot token contract:
+### Deployment
+
+Run the following command, replacing `TOKEN_CONTRACT_ADDRESS` with the `BALLOT_TOKEN_SEPOLIA` environment variable value, the `BLOCK_NO` with the block to pick the winning votes from, and then a list of proposal names separated by spaces.
 
 ```bash
-npm run token:deploy
+npm run ballot:deploy TOKEN_CONTRACT_ADDRESS BLOCK_NO PROPOSAL_1 PROPOSAL_2 ...  # deploy to testnet
 ```
 
-The token address should then be set in the `BALLOT_TOKEN_SEPOLIA` environment variable for easier future cross-referencing.
-
-Next, the ballot contract needs to be deployed:
-
-```bash
-npm run ballot:deploy TOKEN_CONTRACT_ADDRESS BLOCK_NO PROPOSAL_1 PROPOSAL_2 ... 
-```
-
-If `env` is provided as the `TOKEN_CONTRACT_ADDRESS`, then the address is taken from the `BALLOT_TOKEN_SEPOLIA` environment variable.
+If `env` is provided as the `TOKEN_CONTRACT_ADDRESS`, then the address is automatically taken from the `BALLOT_TOKEN_SEPOLIA` environment variable.
 
 ```bash
 npm run ballot:deploy env 3 PROPOSAL_1 PROPOSAL_2 ... 
