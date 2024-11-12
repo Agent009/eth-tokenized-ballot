@@ -26,8 +26,7 @@ contract TokenizedBallot {
     }
 
     function vote(uint256 proposal, uint256 amount) external {
-        // TODO: Implement vote function
-        uint256 votePower = getVotePower(msg.sender); // TODO:
+        uint256 votePower = getVotePower(msg.sender);
         require(votePower >= amount, "Error: Trying to vote with more votes than available.");
         votePowerSpent[msg.sender] += amount;
         // If `proposal` is out of the range of the array, this will throw automatically and revert all changes.

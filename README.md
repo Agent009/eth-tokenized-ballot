@@ -16,7 +16,7 @@ This contract holds the tokens that are used in the ballot.
 ### Testing
 
 ```bash
-npm run token:deploy:test # deploy locally for testing purposes
+npm run token:test # deploy locally for testing purposes
 ```
 
 ### Deployment
@@ -39,7 +39,9 @@ For example:
 
 ```bash
 npm run token:mint 0x0B5455BaC0f3795b5927f37BC545c3eAE08c8b4a 1000000000000000000000
-```### Other Scripts
+```
+
+### Delegation
 
 ```bash
 npm run token:delegate TARGET_ADDRESS TOKEN_CONTRACT_ADDRESS
@@ -59,7 +61,7 @@ You must have the `BallotToken` contract deployed in order to utilise this prope
 ### Testing
 
 ```bash
-npm run ballot:deploy:test # deploy locally for testing purposes
+npm run ballot:test # deploy locally for testing purposes
 ```
 
 ### Deployment
@@ -76,9 +78,17 @@ If `env` is provided as the `TOKEN_CONTRACT_ADDRESS`, then the address is automa
 npm run ballot:deploy env 3 PROPOSAL_1 PROPOSAL_2 ... 
 ```
 
-### Delegate
-
 ### Vote
+
+```bash
+npm run ballot:vote PROPOSAL_INDEX VOTES BALLOT_CONTRACT_ADDRESS
+```
+
+For example:
+
+```bash
+npm run ballot:vote 0 100
+```
 
 ### Other Scripts
 
