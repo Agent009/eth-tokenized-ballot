@@ -25,9 +25,9 @@ async function main() {
     const balanceDeployer = await token.read.balanceOf([deployerAddress]);
     console.log(`${msgPrefix} -> balance of user 1 ${deployerAddress}: ${balanceDeployer}`);
     // Get the current and target block numbers
-    let currentBlockNumber = await publicClient.getBlockNumber();
-    const targetBlockNumber = currentBlockNumber + 1n;
-    console.log(`${msgPrefix} -> current block`, currentBlockNumber, "target block", targetBlockNumber);
+    let blockNo = await publicClient.getBlockNumber();
+    const targetBlockNumber = blockNo + 1n;
+    console.log(`${msgPrefix} -> current block`, blockNo, "target block", targetBlockNumber);
     
     // Deploy the tokenized ballot contract
     msgPrefix = `scripts -> ${BALLOT_CONTRACT_NAME} -> Test`;
@@ -36,13 +36,13 @@ async function main() {
         token.address,
         targetBlockNumber,
     ]);
-    currentBlockNumber = await publicClient.getBlockNumber();
-    console.log(`${msgPrefix} -> deployed ballot contract address`, ballot.address, "block", currentBlockNumber);
+    blockNo = await publicClient.getBlockNumber();
+    console.log(`${msgPrefix} -> deployed ballot contract address`, ballot.address, "block", blockNo);
     // Mint tokens for the second user
     const mintTokens2 = await token.write.mint([acc1Address, MINT_AMOUNT]);
     await publicClient.waitForTransactionReceipt({ hash: mintTokens2 });
-    currentBlockNumber = await publicClient.getBlockNumber();
-    console.log(`${msgPrefix} -> minted ${MINT_AMOUNT.toString()} decimal units to user 2: ${acc1Address}`, "block", currentBlockNumber);
+    blockNo = await publicClient.getBlockNumber();
+    console.log(`${msgPrefix} -> minted ${MINT_AMOUNT.toString()} decimal units to user 2: ${acc1Address}`, "block", blockNo);
 
     // Getting voting power
     console.log(`${msgPrefix} -> getting voting power for user 1...`);
@@ -51,8 +51,8 @@ async function main() {
 
     const delegateTx = await token.write.delegate([acc1Address], { account: deployerAccount });
     await publicClient.waitForTransactionReceipt({ hash: delegateTx });
-    currentBlockNumber = await publicClient.getBlockNumber();
-    console.log(`${msgPrefix} -> delegated voting power to user 2 ${acc1Address}`, "block", currentBlockNumber);
+    blockNo = await publicClient.getBlockNumber();
+    console.log(`${msgPrefix} -> delegated voting power to user 2 ${acc1Address}`, "block", blockNo);
     console.log(`${msgPrefix} -> getting voting power for user 2...`);
     const votingPowerAcc1 = await ballot.read.getVotePower([acc1Address]);
     console.log(`${msgPrefix} -> Voting power of user 2 ${acc1Address}: ${votingPowerAcc1}`);
@@ -66,8 +66,8 @@ async function main() {
         { account: deployerAccount }
     );
     await publicClient.waitForTransactionReceipt({ hash: votingTx });
-    currentBlockNumber = await publicClient.getBlockNumber();
-    console.log(`${msgPrefix} -> voted ${amountToVote} on proposal ${proposalIndex}`, "tx", votingTx, "block", currentBlockNumber);
+    blockNo = await publicClient.getBlockNumber();
+    console.log(`${msgPrefix} -> voted ${amountToVote} on proposal ${proposalIndex}`, "tx", votingTx, "block", blockNo);
 
     const [winningProposal, winner] = await Promise.all([
         ballot.read.winningProposal(),
