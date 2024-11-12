@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.7.0 <0.9.0;
 
+import "@openzeppelin/contracts/utils/Strings.sol";
+
 interface IMyToken {
     function getPastVotes(address, uint256) external view returns (uint256);
 }
@@ -27,7 +29,18 @@ contract TokenizedBallot {
 
     function vote(uint256 proposal, uint256 amount) external {
         uint256 votePower = getVotePower(msg.sender);
-        require(votePower >= amount, "Error: Trying to vote with more votes than available.");
+        require(
+            votePower >= amount,
+            string(
+                abi.encodePacked(
+                    "Error: Trying to vote with more votes than available. Available: ",
+                    Strings.toString(votePower),
+                    ", Specified: ",
+                    Strings.toString(amount)
+                )
+            )
+        );
+
         votePowerSpent[msg.sender] += amount;
         // If `proposal` is out of the range of the array, this will throw automatically and revert all changes.
         proposals[proposal].voteCount += amount;
