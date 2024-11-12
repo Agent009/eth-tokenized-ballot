@@ -5,25 +5,28 @@ import {
   bootstrap,
   checkAddress,
   checkParameters,
+  checkNumber,
   ballotTokenContractAddress,
   formatBigInt,
-  gasPrices
 } from "@scripts/utils";
 
 const CONTRACT_NAME = "BallotToken";
-const MSG_PREFIX = `scripts -> ${CONTRACT_NAME} -> Delegate`;
+const MSG_PREFIX = `scripts -> ${CONTRACT_NAME} -> GetVotePower`;
 
 async function main() {
   // Fetch parameters
   const ARG_TARGET_ADDRESS_IDX = 0;
-  const ARG_CONTRACT_ADDRESS_IDX = 1;
+  const ARG_BLOCK_NO_IDX = 1;
+  const ARG_CONTRACT_ADDRESS_IDX = 2;
   const parameters = process.argv.slice(2);
   const targetAddress = parameters[ARG_TARGET_ADDRESS_IDX] as `0x${string}`;
+  const blockNo = parameters[ARG_BLOCK_NO_IDX];
   const contractAddress = parameters[ARG_CONTRACT_ADDRESS_IDX] as `0x${string}` || ballotTokenContractAddress;
-  checkParameters(parameters, 1, "You must provide the target user address, and optionally, the token contract address.");
+  checkParameters(parameters, 2, "You must provide the target user address, the block no, and optionally, the token contract address.");
   checkAddress("target user", targetAddress);
   checkAddress("token contract", targetAddress);
-  console.log(`${MSG_PREFIX} -> token contract`, contractAddress, "target user", targetAddress);
+  checkNumber("block no", blockNo);
+  console.log(`${MSG_PREFIX} -> token contract`, contractAddress, "target user", targetAddress, "blockNo", blockNo);
 
   // Fetch the contract
   const { publicClient, walletClient } = await bootstrap(MSG_PREFIX, sepolia);
@@ -37,21 +40,14 @@ async function main() {
   });
 
   // Stats before mint
-  const [balance, symbol, votes0] = await Promise.all([
+  const [balance, symbol, votes, votePower] = await Promise.all([
     contract.read.balanceOf([targetAddress]),
     contract.read.symbol(),
     contract.read.getVotes([targetAddress]),
+    contract.read.getPastVotes([targetAddress, BigInt(blockNo!)]),
   ]);
-  console.log(`${MSG_PREFIX} -> target has ${formatBigInt(balance)} decimal units / ${formatEther(balance)} ${symbol}`);
-  console.log(`${MSG_PREFIX} -> target had ${formatBigInt(votes0)} units of voting power BEFORE delegation.`);
-
-  const delegateTx = await await contract.write.delegate([targetAddress]);
-  const delegateReceipt = await publicClient.waitForTransactionReceipt({hash: delegateTx});
-  gasPrices(delegateReceipt, MSG_PREFIX);
-  console.log(`${MSG_PREFIX} -> tx`, delegateReceipt.transactionHash);
-
-  const votes = await contract.read.getVotes([targetAddress]);
-  console.log(`${MSG_PREFIX} -> target has ${formatBigInt(votes)} units of voting power AFTER delegation.`);
+  console.log(`${MSG_PREFIX} -> has ${formatBigInt(balance)} decimal units / ${formatEther(balance)} ${symbol}`, formatBigInt(votes), "units of voting power");
+  console.log(`${MSG_PREFIX} -> had ${formatBigInt(votePower)} units of voting power at blockNo`, blockNo);
 }
 
 main().catch((error) => {

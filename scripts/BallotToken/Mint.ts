@@ -7,6 +7,7 @@ import {
   checkParameters,
   checkNumber,
   ballotTokenContractAddress,
+  formatBigInt,
   gasPrices
 } from "@scripts/utils";
 
@@ -45,8 +46,8 @@ async function main() {
     contract.read.symbol(),
     contract.read.getVotes([targetAddress]),
   ]);
-  console.log(`${MSG_PREFIX} -> target had ${balance0.toString()} decimal units / ${formatEther(balance0)} ${symbol} BEFORE mint`);
-  console.log(`${MSG_PREFIX} -> target had ${votes0.toString()} units of voting power BEFORE mint.`);
+  console.log(`${MSG_PREFIX} -> target had ${formatBigInt(balance0)} decimal units / ${formatEther(balance0)} ${symbol} BEFORE mint`);
+  console.log(`${MSG_PREFIX} -> target had ${formatBigInt(votes0)} units of voting power BEFORE mint.`);
 
   const mintTx = await await contract.write.mint([targetAddress, BigInt(mintAmount as string)]);
   const mintReceipt = await publicClient.waitForTransactionReceipt({hash: mintTx});
@@ -59,8 +60,8 @@ async function main() {
     contract.read.balanceOf([targetAddress]),
     contract.read.getVotes([targetAddress]),
   ]);
-  console.log(`${MSG_PREFIX} -> target has ${balance.toString()} decimal units / ${formatEther(balance)} ${symbol} AFTER mint`);
-  console.log(`${MSG_PREFIX} -> target has ${votes.toString()} units of voting power AFTER mint.`);
+  console.log(`${MSG_PREFIX} -> target has ${formatBigInt(balance)} decimal units / ${formatEther(balance)} ${symbol} AFTER mint`);
+  console.log(`${MSG_PREFIX} -> target has ${formatBigInt(votes)} units of voting power AFTER mint.`);
 }
 
 main().catch((error) => {

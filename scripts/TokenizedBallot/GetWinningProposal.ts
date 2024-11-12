@@ -1,7 +1,7 @@
 import { viem } from "hardhat";
 import { hexToString } from "viem";
 import { sepolia } from "viem/chains";
-import { bootstrap, ballotContractAddress, checkAddress } from "@scripts/utils";
+import { bootstrap, ballotContractAddress, checkAddress, formatBigInt } from "@scripts/utils";
 
 const CONTRACT_NAME = "TokenizedBallot";
 const MSG_PREFIX = `scripts -> ${CONTRACT_NAME} -> GetWinningProposal`;
@@ -27,7 +27,7 @@ async function main() {
   // Get the winning proposal details
   const proposalIndex = await contract.read.winningProposal();
   const proposal = await contract.read.proposals([BigInt(proposalIndex!)]);
-  console.log(`${MSG_PREFIX} -> idx`, proposalIndex, "name", hexToString(proposal[PROPOSAL_NAME_IDX]), "votes", proposal[PROPOSAL_VOTES_IDX]);
+  console.log(`${MSG_PREFIX} -> idx`, proposalIndex, "name", hexToString(proposal[PROPOSAL_NAME_IDX]), "votes", formatBigInt(proposal[PROPOSAL_VOTES_IDX]));
 }
 
 main().catch((error) => {

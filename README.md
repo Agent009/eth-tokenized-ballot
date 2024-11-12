@@ -53,6 +53,18 @@ For example:
 npm run token:delegate 0x0B5455BaC0f3795b5927f37BC545c3eAE08c8b4a
 ```
 
+### Other Scripts
+
+```bash
+npm run token:get-vote-power TARGET_ADDRESS BLOCK_NO TOKEN_CONTRACT_ADDRESS
+```
+
+For example:
+
+```bash
+npm run token:get-vote-power 0x0B5455BaC0f3795b5927f37BC545c3eAE08c8b4a 7061125
+```
+
 ## TokenizedBallot
 
 This contract offers the tokenized ballot functionality.
@@ -73,9 +85,10 @@ npm run ballot:deploy TOKEN_CONTRACT_ADDRESS BLOCK_NO PROPOSAL_1 PROPOSAL_2 ... 
 ```
 
 If `env` is provided as the `TOKEN_CONTRACT_ADDRESS`, then the address is automatically taken from the `BALLOT_TOKEN_SEPOLIA` environment variable.
+If `latest` is provided as the `BLOCK_NO`, then the target block no is set to the latest block no + 1.
 
 ```bash
-npm run ballot:deploy env 3 PROPOSAL_1 PROPOSAL_2 ... 
+npm run ballot:deploy env latest PROPOSAL_1 PROPOSAL_2 ...
 ```
 
 ### Vote

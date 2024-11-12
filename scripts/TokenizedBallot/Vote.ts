@@ -1,6 +1,6 @@
 import { viem } from "hardhat";
 import { sepolia } from "viem/chains";
-import { bootstrap, ballotContractAddress, checkAddress, checkNumber, checkParameters, gasPrices } from "@scripts/utils";
+import { bootstrap, ballotContractAddress, checkAddress, checkNumber, checkParameters, formatBigInt, gasPrices } from "@scripts/utils";
 
 const CONTRACT_NAME = "TokenizedBallot";
 const MSG_PREFIX = `scripts -> ${CONTRACT_NAME} -> Vote`;
@@ -18,7 +18,7 @@ async function main() {
   checkNumber("proposal index", proposalIndex);
   checkNumber("votes", votes);
   checkAddress("ballot contract", contractAddress);
-  console.log(`${MSG_PREFIX} -> ballot contract`, contractAddress, "proposal idx", proposalIndex, "votes", votes);
+  console.log(`${MSG_PREFIX} -> ballot contract`, contractAddress, "proposal idx", proposalIndex, "votes", formatBigInt(BigInt(votes!)));
 
   // Fetch the contract
   const { publicClient, walletClient } = await bootstrap(MSG_PREFIX, sepolia);

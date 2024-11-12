@@ -5,6 +5,7 @@ import {
   checkAddress,
   checkParameters,
   ballotContractAddress,
+  formatBigInt,
 } from "@scripts/utils";
 
 const CONTRACT_NAME = "TokenizedBallot";
@@ -35,7 +36,7 @@ async function main() {
 
   // Stats before mint
   const votePower = await contract.read.getVotePower([targetAddress])
-  console.log(`${MSG_PREFIX} -> target has ${votePower.toString()} units of voting power.`);
+  console.log(`${MSG_PREFIX} -> target has ${formatBigInt(votePower)} units of voting power.`);
 }
 
 main().catch((error) => {

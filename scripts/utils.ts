@@ -8,6 +8,10 @@ export const ballotTokenContractAddress = constants.contracts.ballotToken.sepoli
 export const ballotContractAddress = constants.contracts.ballot.sepolia as `0x${string}`;
 export const deployerAccount = privateKeyToAccount(`0x${constants.account.deployerPrivateKey}`);
 
+export const formatBigInt = (val: number | bigint) => {
+  return new Intl.NumberFormat('en-GB', { useGrouping: true }).format(val);
+}
+
 export const checkParameters = (parameters: string[], count: number, tip?: string): void => {
   if (!parameters || parameters.length < (count - 1))
     throw new Error(`Parameters not provided. ${tip}`);
@@ -64,13 +68,13 @@ export const bootstrap = async (msgPrefix: string = "scripts", chain_?: Chain | 
   const publicClient = await publicClientFor(chain_);
   const deployerAddress = deployerAccount_.address;
   const walletClient = walletClientFor(deployerAccount_);
-  const blockNumber = await publicClient.getBlockNumber();
+  const blockNo = await publicClient.getBlockNumber();
   const balance = await publicClient.getBalance({
     address: deployerAddress,
   });
   console.log(
-    `${msgPrefix} -> last block number`, 
-    blockNumber, 
+    `${msgPrefix} -> blockNo`, 
+    blockNo, 
     "deployer", 
     deployerAddress, 
     "balance", 
@@ -80,7 +84,7 @@ export const bootstrap = async (msgPrefix: string = "scripts", chain_?: Chain | 
   return {
     publicClient,
     walletClient,
-    blockNumber,
+    blockNo,
     balance
   };
 }
