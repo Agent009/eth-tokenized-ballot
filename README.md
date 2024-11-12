@@ -39,6 +39,16 @@ For example:
 
 ```bash
 npm run token:mint 0x0B5455BaC0f3795b5927f37BC545c3eAE08c8b4a 1000000000000000000000
+```### Other Scripts
+
+```bash
+npm run token:delegate TARGET_ADDRESS TOKEN_CONTRACT_ADDRESS
+```
+
+For example:
+
+```bash
+npm run token:delegate 0x0B5455BaC0f3795b5927f37BC545c3eAE08c8b4a
 ```
 
 ## TokenizedBallot

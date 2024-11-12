@@ -11,6 +11,7 @@
     "token:deploy:test": "ts-node -r tsconfig-paths/register --files scripts/BallotToken/Test.ts",
     "token:deploy": "ts-node -r tsconfig-paths/register --files scripts/BallotToken/Deploy.ts",
     "token:mint": "ts-node -r tsconfig-paths/register --files scripts/BallotToken/Mint.ts",
+    "token:delegate": "ts-node -r tsconfig-paths/register --files scripts/BallotToken/Delegate.ts",
     "ballot:deploy:test": "ts-node -r tsconfig-paths/register --files scripts/TokenizedBallot/Test.ts",
     "ballot:deploy": "ts-node -r tsconfig-paths/register --files scripts/TokenizedBallot/Deploy.ts",
     "ballot:get-proposal": "ts-node -r tsconfig-paths/register --files scripts/TokenizedBallot/GetProposal.ts",
