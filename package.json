@@ -15,7 +15,8 @@
     "ballot:deploy:test": "ts-node -r tsconfig-paths/register --files scripts/TokenizedBallot/Test.ts",
     "ballot:deploy": "ts-node -r tsconfig-paths/register --files scripts/TokenizedBallot/Deploy.ts",
     "ballot:get-proposal": "ts-node -r tsconfig-paths/register --files scripts/TokenizedBallot/GetProposal.ts",
-    "ballot:get-winning-proposal": "ts-node -r tsconfig-paths/register --files scripts/TokenizedBallot/GetWinningProposal.ts"
+    "ballot:get-winning-proposal": "ts-node -r tsconfig-paths/register --files scripts/TokenizedBallot/GetWinningProposal.ts",
+    "ballot:get-vote-power": "ts-node -r tsconfig-paths/register --files scripts/TokenizedBallot/GetVotePower.ts"
   },
   "author": "Mohammad Amir <amir@connextar.com>",
   "license": "ISC",

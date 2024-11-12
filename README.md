@@ -85,6 +85,7 @@ npm run ballot:deploy env 3 PROPOSAL_1 PROPOSAL_2 ...
 ```bash
 npm run ballot:get-proposal PROPOSAL_INDEX BALLOT_CONTRACT_ADDRESS
 npm run ballot:get-winning-proposal BALLOT_CONTRACT_ADDRESS
+npm run ballot:get-vote-power TARGET_ADDRESS BALLOT_CONTRACT_ADDRESS
 ```
 
 For example:
@@ -92,4 +93,5 @@ For example:
 ```bash
 npm run ballot:get-proposal 0
 npm run ballot:get-winning-proposal
+npm run ballot:get-vote-power 0x0B5455BaC0f3795b5927f37BC545c3eAE08c8b4a
 ```
