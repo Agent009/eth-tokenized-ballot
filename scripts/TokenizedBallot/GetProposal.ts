@@ -15,9 +15,10 @@ async function main() {
   const parameters = process.argv.slice(2);
   const proposalIndex = parameters[ARG_PROPOSAL_NO_IDX];
   const contractAddress = parameters[ARG_CONTRACT_ADDRESS_IDX] as `0x${string}` || ballotContractAddress;
-  checkParameters(parameters, 2, "You must at least provide the proposal ID.");
-  checkAddress("ballot", contractAddress);
+  checkParameters(parameters, 1, "You must at least provide the proposal ID.");
+  checkAddress("ballot contract", contractAddress);
   checkNumber("proposal index", proposalIndex);
+  console.log(`${MSG_PREFIX} -> ballot contract`, contractAddress, "proposal idx", proposalIndex);
 
   // Fetch the contract
   const { publicClient, walletClient } = await bootstrap(MSG_PREFIX, sepolia);

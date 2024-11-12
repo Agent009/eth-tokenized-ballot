@@ -69,3 +69,17 @@ npm run ballot:deploy env 3 PROPOSAL_1 PROPOSAL_2 ...
 ### Delegate
 
 ### Vote
+
+### Other Scripts
+
+```bash
+npm run ballot:get-proposal PROPOSAL_INDEX BALLOT_CONTRACT_ADDRESS
+npm run ballot:get-winning-proposal BALLOT_CONTRACT_ADDRESS
+```
+
+For example:
+
+```bash
+npm run ballot:get-proposal 0
+npm run ballot:get-winning-proposal
+```
